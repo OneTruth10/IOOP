@@ -13,14 +13,19 @@ public class IBANValidator {
         String temp = "";
         for (int i = 0; i<ibanInput.length(); i++){
             Character ibanChar = ibanInput.charAt(i);
-            if (!(Character.isDigit(ibanChar) || Character.isUpperCase(ibanChar))){
+            if (!(Character.isDigit(ibanChar) || Character.isUpperCase(ibanChar)) || ibanInput.length()<4){
                 validIban = false;
                 System.out.println("False");
                 break;
             }
         }
         if (validIban){
-            movedString = ibanInput.substring(4, ibanInput.length()) + ibanInput.substring(0,4);
+            if (ibanInput.length()>4){
+                movedString = ibanInput.substring(4, ibanInput.length()) + ibanInput.substring(0,4);
+            }else{
+                movedString = ibanInput;
+            }
+            
             for (int i=0; i<movedString.length(); i++){
                 temp += Character.getNumericValue(movedString.charAt(i));
             }
