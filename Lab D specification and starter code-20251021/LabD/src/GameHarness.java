@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class GameHarness {
@@ -14,7 +15,7 @@ public class GameHarness {
 
         System.out.println("Name your hero! (default: Rowan)");
         String name = scanner.nextLine().trim();
-        if (name.length() == 0) name = "Rowan";
+        if (name.isEmpty()) name = "Rowan";
         hero = new Hero(name);
 
         books = new Book[4];
@@ -91,19 +92,41 @@ public class GameHarness {
     }
 
     private static void doBattle() {
-        Character enemy = new Goblin ("Buddy");
+        //75% goblin, 25% Berserker
+        Random rn = new Random();
+        int randomInt = rn.nextInt(4);
+        Character enemy1 = new Goblin("Buddy");
+        Character enemy2 = new Berserker("Jack");
+            
         System.out.println("A wild enemy appears:");
-        enemy.printDetails();
+        if (randomInt==0){
+            enemy2.printDetails();
+            //2. Both hero and enermy have to be alive to battle. (|| to &&)
+            while (hero.isAlive() && enemy2.isAlive()) {
+                //1. Swap order of if statement. Hero needs to attack first
+                if (hero.isAlive()) {
+                    hero.attack (enemy2);
+                }
+                if (enemy2.isAlive()) {
+                    enemy2.attack (hero);
+                }
+            }
 
-        while (hero.isAlive() || enemy.isAlive()) {
-            if (enemy.isAlive()) {
-                enemy.attack (hero);
+        }else{
+            enemy1.printDetails();
+            //2. Both hero and enermy have to be alive to battle. (|| to &&)
+            while (hero.isAlive() && enemy1.isAlive()) {
+                //1. Swap order of if statement. Hero needs to attack first
+                if (hero.isAlive()) {
+                    hero.attack (enemy1);
+                }
+                if (enemy1.isAlive()) {
+                    enemy1.attack (hero);
+                }
             }
-            if (hero.isAlive()) {
-                hero.attack (enemy);
-            }
+
         }
-
+        
         if (hero.isAlive()) {
             System.out.println("Enemy has been defeated!");
         }

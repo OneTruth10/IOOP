@@ -1,12 +1,12 @@
 public class Hero extends Character {
-    private String name;
+    //1. remove varible: name since it is in character class
     private Skill currentSkill;
     private String[] journal;
     private int numJournalEntries;
 
     public Hero(String name) {
-        this.name = name;
-        this.hitPoints = 12;
+        //change to super() instead of explicitly assigning variable
+        super(name, 12);
         this.currentSkill = Skill.NONE;
         this.journal = new String[5];
         this.numJournalEntries = 0;
@@ -40,7 +40,8 @@ public class Hero extends Character {
             System.out.println(this.name + " does not know how to do that");
         }
     }
-
+    //2. Added override annotation
+    @Override
     public void printDetails() {
         System.out.println("Hero name: '" + name + "', equipped skill: " + currentSkill + " hit points " + hitPoints);
     }
@@ -59,18 +60,18 @@ public class Hero extends Character {
     @Override
     public void attack(Character target) {
         int damage = 2; // base unskilled damage
-
         if (currentSkill == Skill.SWORD_FIGHTING) {
             damage = 8;
             System.out.println(name + " slashes " + target.name + " for " + damage + " damage!");
+            //3. Implement takeDamage for SWORD FIGHTING
         } else if (currentSkill == Skill.SPELLCASTING) {
             damage = 10;
             System.out.println(name + " casts a fireball at " + target.name + " for " + damage + " damage!");
-            this.takeDamage(damage);
+            //4. Change "this" to "target" so that the hero does not damage himself
         } else {
             System.out.println(name + " punches " + target.name + " for " + damage + " damage!");
-            target.takeDamage(damage);
         }
+        target.takeDamage(damage);
     }
 
 }
